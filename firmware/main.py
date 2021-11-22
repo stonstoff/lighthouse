@@ -70,7 +70,7 @@ MAX_DGRAM_SIZE = 1472
 def lookup_position():
     # https://forum.micropython.org/viewtopic.php?t=1969
     global my_location
-    with open('mac-location.csv','r') as file:
+    with open('ip-location.csv','r') as file:
         for line in file:
             line=line.rstrip('\n')
             line=line.rstrip('\r')
