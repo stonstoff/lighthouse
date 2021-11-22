@@ -5,6 +5,27 @@ import time
 import esp32
 import machine
 from ota_updater import OTAUpdater
+from HttpOTA import HttpOTA
+import senko
+import uota
+
+
+
+# TODO firmware update
+#otaUpdater = OTAUpdater('https://github.com/stonstoff/lighthouse')
+#print(otaUpdater.get_latest_version())
+#otaUpdater.install_update_if_available()
+#if (otaUpdater.check_for_update_to_install_during_next_reboot()):
+#    machine.reset()
+#otaUpdater.check_for_update_to_install_during_next_reboot()
+#otaUpdater.install_update_if_available()
+#print(otaUpdater._check_for_new_version())
+
+
+# httpOta = HttpOTA("esp32", base_url="https://github.com/stonstoff/lighthouse/esp32")
+
+
+
 
 debug=True
 
@@ -267,8 +288,12 @@ def send_message(sub_pattern, arg):
     
 def firmware_update():
     # TODO firmware update
-    otaUpdater = OTAUpdater('https://github.com/stonstoff/blinkenlights.git', github_src_dir='esp32')
-    otaUpdater.install_update_if_available()
+    #otaUpdater = OTAUpdater('https://github.com/stonstoff/lighthouse')
+    #otaUpdater.install_update_if_available()
+    print(otaUpdater.get_version('/'))
+    print(otaUpdater.get_latest_version())
+    #otaUpdater.install_update_if_available()
+    #otaUpdater.install_update_if_available()
     return FIRMWARE_VERSION
 
 
