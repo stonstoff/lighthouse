@@ -296,9 +296,8 @@ def firmware_update():
 
     if uota.check_for_updates(version_check=False):
         uota.install_new_firmware()
-
-    return FIRMWARE_VERSION
-
+        
+    machine.reset()
 
 def is_my_location(location_pattern):
     # skip substring 'light'
