@@ -8,6 +8,7 @@ from ota_updater import OTAUpdater
 from HttpOTA import HttpOTA
 import senko
 import uota
+import sys
 
 
 # TODO firmware update
@@ -294,6 +295,7 @@ def firmware_update():
     if uota.check_for_updates(version_check=False):
         send_message("ready", 0)        
         uota.install_new_firmware()
+        sys.exit()
         machine.reset()
     else:
         print("nothing to do")
