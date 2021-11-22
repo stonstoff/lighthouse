@@ -31,7 +31,15 @@ debug=True
 from uosc.client import Bundle, Client, create_message
 from led_control import rgbw,rgb,hsl,off
 
-FIRMWARE_VERSION = 0.1
+
+FIRMWARE_VERSION = -1
+
+with open('version','r') as file:
+    for line in file:
+        line=line.rstrip('\n')
+        line=line.rstrip('\r')
+        FIRMWARE_VERSION = line
+
 
 
 # that's me
@@ -216,6 +224,8 @@ def handle_osc(data, src, dispatch=None, strict=False):
                         #tc = -1
                         #tc = (tf-32.0)/1.8
                         send_message("celsius", -1)
+                    elif addr_pattern[2] == "firmware":
+                        send_message("firmware", FIRMWARE_VERSION)
                     elif addr_pattern[2] == "off":
                         off()
                     elif addr_pattern[2] == "restart":
@@ -286,18 +296,11 @@ def send_message(sub_pattern, arg):
     
     
 def firmware_update():
-    # TODO firmware update
-    #otaUpdater = OTAUpdater('https://github.com/stonstoff/lighthouse')
-    #otaUpdater.install_update_if_available()
-    #print(otaUpdater.get_version('/'))
-    #print(otaUpdater.get_latest_version())
-    #otaUpdater.install_update_if_available()
-    #otaUpdater.install_update_if_available()
-
     if uota.check_for_updates(version_check=False):
         uota.install_new_firmware()
-        
+    send_message("ready", 0)        
     machine.reset()
+    
 
 def is_my_location(location_pattern):
     # skip substring 'light'
@@ -342,10 +345,10 @@ osc_client = Client(OSC_SERVER_IP, OSC_SERVER_PORT)
 if not wlan.isconnected():
     yellow_on_error()
 elif not lookup_position():
-    send_message("started", 0)
+    send_message("ready", 0)
     red_on_error()
 else:     
-    send_message("started", 1)
+    send_message("ready", 1)
     green_on_ready()
     
     
