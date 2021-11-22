@@ -1,0 +1,71 @@
+#N canvas 0 48 956 848 12;
+#X obj 77 537 mrpeach/packOSC;
+#X obj 66 562 mrpeach/udpsend;
+#X obj 66 587 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
+1;
+#X text 29 17 This patch connects to the OSCBroadcaster;
+#X text 51 40 - For Testing the connection move the slider to send
+an OSC message;
+#X text 52 72 - OSC message from OSCBroadcaster can be received using
+PD patch receive.pd;
+#X text 53 106 - The message /server/list sends a request to the OSCBroadcaster
+to feed back the registered hosts;
+#X msg 52 202 disconnect;
+#X msg 42 177 connect 149.222.206.225 9000;
+#X msg 31 154 connect 192.168.1.105 9000;
+#X obj 500 298 t b f;
+#X obj 544 299 t b f;
+#X obj 116 484 print;
+#X obj 516 350 pack f f f f;
+#X obj 587 298 t b f;
+#X obj 453 324 int;
+#X obj 532 321 int;
+#X obj 576 322 int;
+#X msg 116 460 send /lighthouse/lightx0y0 \$1 \$2 \$3 \$4;
+#X obj 619 321 float;
+#X msg 75 250 /lighthouse/update;
+#X msg 65 225 /lighthouse/status;
+#X msg 105 349 /lighthouse/restart;
+#X obj 453 162 vsl 15 128 0 255 0 0 empty empty red 0 -9 0 10 -262144
+-1 -1 0 1;
+#X obj 500 162 vsl 15 128 0 255 0 0 empty empty green 0 -9 0 10 -262144
+-1 -1 0 1;
+#X obj 544 163 vsl 15 128 0 255 0 0 empty empty blue 0 -9 0 10 -262144
+-1 -1 0 1;
+#X obj 587 163 vsl 15 128 0 1 0 0 empty empty brightness 0 -9 0 10
+-262144 -1 -1 0 1;
+#X msg 83 277 /lighthouse/lightx0y0 off;
+#X msg 98 326 /lighthouse/off;
+#X msg 113 407 /lighthouse/temperature;
+#X msg 91 301 /lighthouse/lightx0y0 network;
+#X msg 111 375 /lighthouse/firmware;
+#X connect 0 0 1 0;
+#X connect 1 0 2 0;
+#X connect 7 0 1 0;
+#X connect 8 0 1 0;
+#X connect 9 0 1 0;
+#X connect 10 0 15 0;
+#X connect 10 1 16 0;
+#X connect 11 0 15 0;
+#X connect 11 1 17 0;
+#X connect 13 0 18 0;
+#X connect 14 0 15 0;
+#X connect 14 1 19 0;
+#X connect 15 0 13 0;
+#X connect 16 0 13 1;
+#X connect 17 0 13 2;
+#X connect 18 0 0 0;
+#X connect 18 0 12 0;
+#X connect 19 0 13 3;
+#X connect 20 0 0 0;
+#X connect 21 0 0 0;
+#X connect 22 0 0 0;
+#X connect 23 0 15 0;
+#X connect 24 0 10 0;
+#X connect 25 0 11 0;
+#X connect 26 0 14 0;
+#X connect 27 0 0 0;
+#X connect 28 0 0 0;
+#X connect 29 0 0 0;
+#X connect 30 0 0 0;
+#X connect 31 0 0 0;

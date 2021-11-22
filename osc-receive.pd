@@ -1,0 +1,18 @@
+#N canvas 1008 490 588 185 12;
+#X obj 133 129 mrpeach/unpackOSC;
+#X obj 133 106 mrpeach/udpreceive 9001;
+#X text 19 20 This patchs listens for OSC messages from OSCBroadcaster
+;
+#X obj 31 160 print receive;
+#X obj 133 161 route /valueToNetwork;
+#X floatatom 133 185 5 0 0 0 - - -;
+#X obj 136 208 hsl 128 15 0 127 0 0 empty empty empty -2 -8 0 10 -262144
+-1 -1 0 1;
+#X text 41 41 - to receive a message from the OSCbroadcaster register
+at the broadcaster by intially sending an OSC message to it (see osc-send.pd)
+;
+#X connect 0 0 3 0;
+#X connect 0 0 4 0;
+#X connect 1 0 0 0;
+#X connect 4 0 5 0;
+#X connect 5 0 6 0;
