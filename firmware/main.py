@@ -296,7 +296,7 @@ def send_message(sub_pattern, arg):
     
     
 def firmware_update():
-    if uota.check_for_updates(): #version_check=False):
+    if uota.check_for_updates(version_check=False):
         uota.install_new_firmware()
         send_message("ready", 0)        
         machine.reset()
