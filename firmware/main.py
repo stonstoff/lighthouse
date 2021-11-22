@@ -292,7 +292,7 @@ def firmware_update():
     #otaUpdater.install_update_if_available()
     #otaUpdater.install_update_if_available()
 
-    if uota.check_for_updates():
+    if uota.check_for_updates(version_check=False):
         uota.install_new_firmware()
 
     return FIRMWARE_VERSION
