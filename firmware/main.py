@@ -34,11 +34,6 @@ from led_control import rgbw,rgb,hsl,off
 
 FIRMWARE_VERSION = -1
 
-with open('version','r') as file:
-    for line in file:
-        line=line.rstrip('\n')
-        line=line.rstrip('\r')
-        FIRMWARE_VERSION = line
 
 
 
@@ -225,6 +220,11 @@ def handle_osc(data, src, dispatch=None, strict=False):
                         #tc = (tf-32.0)/1.8
                         send_message("celsius", -1)
                     elif addr_pattern[2] == "firmware":
+                        with open('version','r') as file:
+                            for line in file:
+                                line=line.rstrip('\n')
+                                line=line.rstrip('\r')
+                                FIRMWARE_VERSION = line
                         send_message("version", FIRMWARE_VERSION)
                     elif addr_pattern[2] == "off":
                         off()
