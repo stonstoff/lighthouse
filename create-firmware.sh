@@ -1,4 +1,3 @@
 #!/bin/bash
 
-cd esp32/
-tar cvzf ../firmware.tar.gz .
+cd firmware && tar cvzf ../firmware.tar.gz .
