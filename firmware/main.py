@@ -9,7 +9,8 @@ from HttpOTA import HttpOTA
 import senko
 import uota
 
-
+if uota.check_for_updates():
+    uota.install_new_firmware()
 
 # TODO firmware update
 #otaUpdater = OTAUpdater('https://github.com/stonstoff/lighthouse')
@@ -290,10 +291,14 @@ def firmware_update():
     # TODO firmware update
     #otaUpdater = OTAUpdater('https://github.com/stonstoff/lighthouse')
     #otaUpdater.install_update_if_available()
-    print(otaUpdater.get_version('/'))
-    print(otaUpdater.get_latest_version())
+    #print(otaUpdater.get_version('/'))
+    #print(otaUpdater.get_latest_version())
     #otaUpdater.install_update_if_available()
     #otaUpdater.install_update_if_available()
+
+    if uota.check_for_updates():
+        uota.install_new_firmware()
+
     return FIRMWARE_VERSION
 
 
@@ -326,7 +331,6 @@ def red_on_error():
         time.sleep_ms(200)
         off()
         time.sleep_ms(200)   
-
 
 def yellow_on_error():
     while True:
