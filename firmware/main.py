@@ -295,7 +295,6 @@ def firmware_update():
     if uota.check_for_updates(version_check=False):
         send_message("ready", 0)        
         uota.install_new_firmware()
-        sys.exit()
         machine.reset()
     else:
         print("nothing to do")
