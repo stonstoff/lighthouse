@@ -9,9 +9,6 @@ from HttpOTA import HttpOTA
 import senko
 import uota
 
-if uota.check_for_updates():
-    uota.install_new_firmware()
-
 
 # TODO firmware update
 #otaUpdater = OTAUpdater('https://github.com/stonstoff/lighthouse')
@@ -25,8 +22,6 @@ if uota.check_for_updates():
 
 
 # httpOta = HttpOTA("esp32", base_url="https://github.com/stonstoff/lighthouse/esp32")
-
-
 
 
 debug=True
