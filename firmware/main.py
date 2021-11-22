@@ -225,7 +225,7 @@ def handle_osc(data, src, dispatch=None, strict=False):
                         #tc = (tf-32.0)/1.8
                         send_message("celsius", -1)
                     elif addr_pattern[2] == "firmware":
-                        send_message("firmware", FIRMWARE_VERSION)
+                        send_message("version", FIRMWARE_VERSION)
                     elif addr_pattern[2] == "off":
                         off()
                     elif addr_pattern[2] == "restart":
