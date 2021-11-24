@@ -8,8 +8,8 @@ import ubinascii
 wlan = network.WLAN(network.STA_IF)
 wlan.active(True)
 
-the_ssid = "DISSIZIT"
-the_passwd = "lisboapw"
+the_ssid = "FRITZ!Box 7590 NY"
+the_passwd = "63262718488731227570"
 
 print("Connecting to Wifi")
 wlan.connect(the_ssid, the_passwd)

@@ -43,7 +43,7 @@ OSC_CLIENT_IP = wlan.ifconfig()[0]
 OSC_CLIENT_PORT = 9000
 
 # Audio Lab OSCbroadcaster
-OSC_SERVER_IP = "192.168.1.100"
+OSC_SERVER_IP = "149.222.206.37"
 OSC_SERVER_PORT = 9001
 
 
@@ -216,10 +216,10 @@ def handle_osc(data, src, dispatch=None, strict=False):
                     elif addr_pattern[2] == "update":
                         send_message("firmware", firmware_update())
                     elif addr_pattern[2] == "temperature":
-                        #tf = esp32.raw_temperature()
+                        tf = esp32.raw_temperature()
                         #tc = -1
                         #tc = (tf-32.0)/1.8
-                        send_message("celsius", -1)
+                        send_message("celsius", tf)
                     elif addr_pattern[2] == "firmware":
                         send_message("version", FIRMWARE_VERSION)
                     elif addr_pattern[2] == "off":
