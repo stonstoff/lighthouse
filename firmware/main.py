@@ -32,6 +32,7 @@ debug=True
 from uosc.client import Bundle, Client, create_message
 from led_control import rgbw,rgb,hsl,off
 
+from activity import activity
 
 FIRMWARE_VERSION = -1
 with open('version','r') as file:
@@ -274,6 +275,7 @@ def run_server(saddr, port, handler=handle_osc):
             data, caddr = sock.recvfrom(MAX_DGRAM_SIZE)
             if debug: log.debug("RECV %i bytes from %s:%s",
                                     len(data), *get_hostport(caddr))
+            activity()
             handler(data, caddr)
     except:
         log.debug("Something went wrong")
