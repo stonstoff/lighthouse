@@ -4,16 +4,26 @@
 
 import network
 import ubinascii
+from activity import init_activity, activity
+import time
+
+init_activity()
 
 wlan = network.WLAN(network.STA_IF)
 wlan.active(True)
 
-the_ssid = "FRITZ!Box 7590 NY"
-the_passwd = "63262718488731227570"
-
-print("Connecting to Wifi")
-wlan.connect(the_ssid, the_passwd)
+SSID = "SSID"
+PASS = "password"
+with open("wifi_credentials") as wifi_credentials:
+    lines = wifi_credentials.readlines()
+    SSID = lines[0].strip()
+    PASS = lines[1].strip()
+    
+print("Connecting to Wifi " + SSID)
+wlan.connect(SSID, PASS)
 while not wlan.isconnected():
+    activity()
+    time.sleep_ms(250)
     pass
 
 
@@ -30,3 +40,4 @@ print("My MAC:", mac);
 
 # import webrepl
 # webrepl.start()
+
