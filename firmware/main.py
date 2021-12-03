@@ -58,6 +58,7 @@ BASE_PATTERN = "/lighthouse"
 my_ip = OSC_CLIENT_IP
 my_mac = ubinascii.hexlify(network.WLAN().config('mac'),':').decode()
 my_location = [-1,-1]
+my_brightness = 1.0
 
 try:
     from ustruct import unpack
@@ -247,12 +248,11 @@ def handle_osc(data, src, dispatch=None, strict=False):
                         the_red = float(args[0]/255)
                         the_green = float(args[1]/255)
                         the_blue = float(args[2]/255)
-                        the_brightness = float(args[3])
-                        print(the_red, the_green, the_blue, the_brightness)
+                        print(the_red, the_green, the_blue)
                         rgb(limit_value(the_red)
                             , limit_value(the_green)
                             , limit_value(the_blue)
-                            , limit_value(the_brightness)
+                            , limit_value(my_brightness)
                             )
                     
             
