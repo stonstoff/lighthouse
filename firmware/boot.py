@@ -8,6 +8,7 @@ from activity import init_activity, activity
 import time
 import calibration
 import temperature
+import os
 
 init_activity()
 
@@ -25,11 +26,12 @@ print("My temperature: " + str(temperature.read_temperature()))
 
 wlan.active(True)
 SSID = "SSID"
-PASS = "password" 
-with open("wifi_credentials") as wifi_credentials:
-    lines = wifi_credentials.readlines()
-    SSID = lines[0].strip()
-    PASS = lines[1].strip()
+PASS = "password"
+if "wifi_credentials" in os.listdir():
+    with open("wifi_credentials") as wifi_credentials:
+        lines = wifi_credentials.readlines()
+        SSID = lines[0].strip()
+        PASS = lines[1].strip()
     
 print("Connecting to Wifi " + SSID)
 wlan.connect(SSID, PASS)

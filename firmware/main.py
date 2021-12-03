@@ -45,11 +45,11 @@ with open('version','r') as file:
 
 # that's me
 OSC_CLIENT_IP = wlan.ifconfig()[0]
-OSC_CLIENT_PORT = 9000
+OSC_CLIENT_PORT = 9001
 
 # Audio Lab OSCbroadcaster
-OSC_SERVER_IP = "149.222.206.37"
-OSC_SERVER_PORT = 9001
+OSC_SERVER_IP = "149.222.206.225"
+OSC_SERVER_PORT = 9000
 
 
 
