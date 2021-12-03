@@ -34,6 +34,10 @@ from led_control import rgbw,rgb,hsl,off
 
 from activity import activity
 
+import temperature
+import calibration
+import ujson
+
 FIRMWARE_VERSION = -1
 with open('version','r') as file:
     FIRMWARE_VERSION = file.read().strip()
@@ -41,11 +45,11 @@ with open('version','r') as file:
 
 # that's me
 OSC_CLIENT_IP = wlan.ifconfig()[0]
-OSC_CLIENT_PORT = 9001
+OSC_CLIENT_PORT = 9000
 
 # Audio Lab OSCbroadcaster
-OSC_SERVER_IP = "149.222.206.225"
-OSC_SERVER_PORT = 9000
+OSC_SERVER_IP = "149.222.206.37"
+OSC_SERVER_PORT = 9001
 
 
 
@@ -54,7 +58,6 @@ BASE_PATTERN = "/lighthouse"
 my_ip = OSC_CLIENT_IP
 my_mac = ubinascii.hexlify(network.WLAN().config('mac'),':').decode()
 my_location = [-1,-1]
-
 my_brightness = 1.0
 
 try:
@@ -219,10 +222,11 @@ def handle_osc(data, src, dispatch=None, strict=False):
                     elif addr_pattern[2] == "update":
                         send_message("firmware", firmware_update())
                     elif addr_pattern[2] == "temperature":
-                        tf = esp32.raw_temperature()
-                        #tc = -1
-                        #tc = (tf-32.0)/1.8
-                        send_message("celsius", tf)
+                        send_message("celsius", temperature.read_temperature())
+                    elif addr_pattern[2] == "brightness":
+                        send_message("adc", calibration.measure_light_median())
+                    elif addr_pattern[2] == "calibrate":
+                        send_message("adc", ujson.dumps(calibration.calibrate()))
                     elif addr_pattern[2] == "firmware":
                         send_message("version", FIRMWARE_VERSION)
                     elif addr_pattern[2] == "off":
@@ -244,8 +248,7 @@ def handle_osc(data, src, dispatch=None, strict=False):
                         the_red = float(args[0]/255)
                         the_green = float(args[1]/255)
                         the_blue = float(args[2]/255)
-                        # the_brightness = float(args[3])
-                        # print(the_red, the_green, the_blue, the_brightness)
+                        print(the_red, the_green, the_blue)
                         rgb(limit_value(the_red)
                             , limit_value(the_green)
                             , limit_value(the_blue)
@@ -352,8 +355,8 @@ elif not lookup_position():
 else:     
     send_message("ready", 1)
     green_on_ready()
-
-send_message("/server/connect", 0)
+    
+    
 
 run_server(OSC_CLIENT_IP, OSC_CLIENT_PORT, handle_osc)
 

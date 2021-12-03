@@ -10,30 +10,36 @@ pwm_red = PWM(pin_red)
 pwm_green = PWM(pin_green)
 pwm_white = PWM(pin_white)
 
+PWM_FREQ = const(100)
 
 def init_pwm():
-    pwm_blue.freq(1000)
-    pwm_red.freq(1000)
-    pwm_green.freq(1000)
-    pwm_white.freq(1000)
+    pwm_blue.freq(PWM_FREQ)
+    pwm_red.freq(PWM_FREQ)
+    pwm_green.freq(PWM_FREQ)
+    pwm_white.freq(PWM_FREQ)
     pwm_blue.duty(0)
     pwm_red.duty(0)
     pwm_green.duty(0)
     pwm_white.duty(0)
     
+MINIMA = [0.0,0.0,0.0,0.0]
+LINEAR = [1.0,1.0,1.0,1.0]
 
-def rgbw(r,g,b,w,brightness):
+
+def rgbw(r,g,b,w):
+    pwm_r = int(((r * LINEAR[0]) + MINIMA[0]) * 1023.0) if r > 0 else 0
+    pwm_g = int(((g * LINEAR[1]) + MINIMA[1]) * 1023.0) if g > 0 else 0
+    pwm_b = int(((b * LINEAR[2]) + MINIMA[2]) * 1023.0) if b > 0 else 0
+    pwm_w = int(((w * LINEAR[3]) + MINIMA[3]) * 1023.0) if w > 0 else 0
+    pwm_red.duty(pwm_r)
+    pwm_green.duty(pwm_g)
+    pwm_blue.duty(pwm_b)
+    pwm_white.duty(pwm_w)
+   
+def rgb(r,g,b,brightness):
     r = r * brightness
     g = g * brightness
     b = b * brightness
-    w = w * brightness
-    pwm_blue.duty(int(b * 1023.0))
-    pwm_red.duty(int(r * 1023.0))
-    pwm_green.duty(int(g * 1023.0))
-    pwm_white.duty(int(w * 1023.0))
-   
-   
-def rgb(r,g,b,brightness):
     maxv = max(r,g,b)
     if maxv == 0:
         rgbw(0,0,0,0)
@@ -45,7 +51,7 @@ def rgb(r,g,b,brightness):
         M = max(hr, max(hg, hb))
         m = min(hr, min(hg,hb))
         luminance = ((M + m) / 2.0 - 0.5) * (2.0 / multiplier)
-        rgbw(r - luminance, g - luminance, b - luminance, luminance, brightness)
+        rgbw(r - luminance, g - luminance, b - luminance, luminance)
         
         
 def hsl(h,s,l):
@@ -90,3 +96,6 @@ def off():
     pwm_red.duty(0)
     pwm_green.duty(0)
     pwm_white.duty(0)
+    
+
+off()
