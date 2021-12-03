@@ -34,6 +34,10 @@ from led_control import rgbw,rgb,hsl,off
 
 from activity import activity
 
+import temperature
+import calibration
+import ujson
+
 FIRMWARE_VERSION = -1
 with open('version','r') as file:
     FIRMWARE_VERSION = file.read().strip()
@@ -217,10 +221,11 @@ def handle_osc(data, src, dispatch=None, strict=False):
                     elif addr_pattern[2] == "update":
                         send_message("firmware", firmware_update())
                     elif addr_pattern[2] == "temperature":
-                        tf = esp32.raw_temperature()
-                        #tc = -1
-                        #tc = (tf-32.0)/1.8
-                        send_message("celsius", tf)
+                        send_message("celsius", temperature.read_temperature())
+                    elif addr_pattern[2] == "brightness":
+                        send_message("adc", calibration.measure_light_median())
+                    elif addr_pattern[2] == "calibrate":
+                        send_message("adc", ujson.dumps(calibration.calibrate()))
                     elif addr_pattern[2] == "firmware":
                         send_message("version", FIRMWARE_VERSION)
                     elif addr_pattern[2] == "off":

@@ -4,23 +4,34 @@ import led_control
 import time
 import ujson
 import os
+import activity
 
 activity_led_pin = const(8)
 
 @micropython.native
 def measure_light_avg(measurements=64):
+    #Disable activity led
+    disabled_before = activity.DISABLED
+    activity.DISABLED = True
     #Setup pin
+    pin = Pin(activity_led_pin, Pin.OUT)
+    pin.off()
     pin = Pin(activity_led_pin, Pin.IN, Pin.PULL_UP)
+    #Setup ADC
     adc = ADC(Pin(activity_led_pin))
-    #adc.width(ADC.WIDTH_12BIT)
     adc.atten(ADC.ATTN_2_5DB)
-    
+    #Take measurements
     acc = 0
     measurement_max = float(2**16)
     for i in range(measurements):
         acc += float(adc.read_u16()) / measurement_max
         time.sleep_us(10) # wait 10 us between measurements
     acc = acc / measurements
+    #Reset pin to output
+    pin = Pin(activity_led_pin, Pin.OUT)
+    pin.off()
+    activity.DISABLED = disabled_before
+    #Return result
     return acc
 
 def measure_light_median(measurements=5, timeout_period=50):
@@ -64,6 +75,8 @@ def calibrate():
     # reset calibration factors in led_control
     led_control.MINIMA = [0.0,0.0,0.0,0.0]
     led_control.LINEAR = [1.0,1.0,1.0,1.0]
+    #stop activity led
+    activity.DISABLED = True
     #gather measurements
     step_width = 0.05
     factors = calibration_factors()
@@ -83,6 +96,8 @@ def calibrate():
     #set calibration factors in led_control
     led_control.MINIMA = minima
     led_control.LINEAR = linear
+    #Reenable activity led
+    activity.DISABLED = False
     #save calibration to file
     calibration = {
             'minima': minima,
@@ -99,5 +114,7 @@ def load_calibration():
             led_control.MINIMA = calibration["minima"]
             led_control.LINEAR = calibration["linear"]
             print("Loaded LED calibration")
+        return True
     else:
         print("No LED calibration stored")
+        return False
