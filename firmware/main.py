@@ -356,7 +356,16 @@ else:
     send_message("ready", 1)
     green_on_ready()
     
-    
+# keepalive ping
+from machine import Timer
+keepalive_timer = Timer(1)
+from micropython import schedule
+keepalive_timer.init(period=5000, mode=Timer.ONE_SHOT, callback=lambda t: schedule(keepalive_callback,1))
+def keepalive_callback(first):
+    temp_deg_c = temperature.read_temperature()
+    send_message("keepalive_temp_c",temp_deg_c)
+    print("Keepalive Temperature: " + str(temp_deg_c))
+    keepalive_timer.init(period=5000, mode=Timer.ONE_SHOT, callback=lambda t: schedule(keepalive_callback,0))
 
 run_server(OSC_CLIENT_IP, OSC_CLIENT_PORT, handle_osc)
 

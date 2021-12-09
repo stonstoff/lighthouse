@@ -34,9 +34,13 @@ def read_temperature():
     
     
     #4. Wait for SENS_TSENS_READY
+    retries = 5
     while not (mem32[SENS_SAR_TSENS_CTRL_REG] & SENS_TSENS_READY > 0):
         print("Waiting for SENS_TSENS_READY")
-        time.sleep_ms(500)
+        retries -= 1
+        time.sleep_ms(10)
+        if retries < 1:
+            break;
     
     #5. Read result
     result = mem32[SENS_SAR_TSENS_CTRL_REG] & SENS_TSENS_OUT
